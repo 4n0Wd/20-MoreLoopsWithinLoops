@@ -3,8 +3,8 @@ This project demonstrates NESTED LOOPS (i.e., loops within loops)
 in the context of SEQUENCES OF SUB-SEQUENCES.
 
 Authors: David Mutchler, Valerie Galluzzi, Mark Hays, Amanda Stouder,
-         their colleagues and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         their colleagues and Hanyu Yang.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 
 def main():
@@ -17,7 +17,7 @@ def main():
 def run_test_largest_number():
     """ Tests the    largest_number    function. """
     # ------------------------------------------------------------------
-    # TODO: 2. Implement this TEST function.
+    # DONE: 2. Implement this TEST function.
     #   It TESTS the  largest_number  function defined below.
     #   Include at least ** 1 ** ADDITIONAL test beyond those we wrote.
     # ------------------------------------------------------------------
@@ -28,9 +28,7 @@ def run_test_largest_number():
 
     # Test 1:
     expected = 13
-    answer = largest_number([(3, 1, 4),
-                             (13, 10, 11, 7, 10),
-                             [1, 2, 3, 4]])
+    answer = largest_number([(3, 1, 4), (13, 10, 11, 7, 10), [1, 2, 3, 4]])
     print('Expected and actual are:', expected, answer)
 
     # Test 2:
@@ -44,7 +42,10 @@ def run_test_largest_number():
     print('Expected and actual are:', expected, answer)
 
     # TO DO 2 (continued): Add your ADDITIONAL test(s) here:
-
+    # Test 4:
+    expected = 111
+    answer = largest_number([[111, 0], [22]])
+    print('Expected and actual are:', expected, answer)
 
 def largest_number(seq_seq):
     """
@@ -71,8 +72,42 @@ def largest_number(seq_seq):
     and the given argument is a sequence of sequences,
     where each subsequence contains only numbers.
     """
+    '''flag = 0
+    index1 = -1
+    index2 = 0
+    for k in range(len(seq_seq)):
+        if len(seq_seq[k]) == 0:
+            continue
+        if flag == 0:
+            index1 = k
+            flag = 1
+        for i in range(len(seq_seq[k])):
+            if seq_seq[k][i] > seq_seq[index1][index2]:
+                index1 = k
+                index2 = i
+    if index1 == -1 and index2 == 0:
+        return None
+    return seq_seq[index1][index2]'''
+
+    index = 0
+    seq = []
+    for k in range(len(seq_seq)):
+        if seq_seq[k] == []:
+            continue
+        for i in range(len(seq_seq[k])):
+            if seq_seq[k][i] > seq_seq[k][index]:
+                index = i
+        seq = seq + [seq_seq[k][index]]
+    index = 0
+    if seq == []:
+        return None
+    for k in range(len(seq)):
+        if seq[k] > seq[index]:
+            index = k
+    return seq[index]
+
     # ------------------------------------------------------------------
-    # TODO: 3. Implement and test this function.
+    # DONE: 3. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     # ------------------------------------------------------------------
 
@@ -80,7 +115,7 @@ def largest_number(seq_seq):
 def run_test_largest_negative_number():
     """ Tests the    largest_negative_number    function. """
     # ------------------------------------------------------------------
-    # TODO: 4. Implement this TEST function.
+    # DONE: 4. Implement this TEST function.
     #   It TESTS the  largest_negative_number  function defined below.
     #
     #   Include enough tests to give you confidence that your solution
@@ -90,6 +125,26 @@ def run_test_largest_negative_number():
     print('-------------------------------------------------')
     print('Testing the   LARGEST_NEGATIVE_NUMBER   function:')
     print('-------------------------------------------------')
+
+    # Test 1:
+    expected = -4
+    answer = largest_negative_number([(3, 1, -4), (-13, 10, 11, 7, 10), [1, 2, 3, 4]])
+    print('Expected and actual are:', expected, answer)
+
+    # Test 2:
+    expected = None
+    answer = largest_negative_number([(3, 1, 4), (13, 10, 11, 7, 10), [1, 2, 3, 4]])
+    print('Expected and actual are:', expected, answer)
+
+    # Test 3:
+    expected = -1
+    answer = largest_negative_number([(-3, -1, 4), (-13, -10, -11, -7, -10), [-1, -2, -3, -4]])
+    print('Expected and actual are:', expected, answer)
+
+    # Test 4:
+    expected = None
+    answer = largest_negative_number([(), (), []])
+    print('Expected and actual are:', expected, answer)
 
 
 def largest_negative_number(seq_seq):
@@ -114,8 +169,29 @@ def largest_negative_number(seq_seq):
     and the given argument is a sequence of sequences,
     where each subsequence contains only numbers.
     """
+
+    index1 = -1
+    index2 = 0
+    for k in range(len(seq_seq)):
+        if seq_seq[k] == []:
+            continue
+        for i in range(len(seq_seq[k])):
+            if index1 != -1:
+                break
+            if seq_seq[k][i] < 0:
+                index1 = k
+                index2 = i
+                break
+        for i in range(len(seq_seq[k])):
+            if seq_seq[k][i] > seq_seq[index1][index2] and seq_seq[k][i] < 0:
+                index1 = k
+                index2 = i
+    if index1 == -1:
+        return None
+    return seq_seq[index1][index2]
+
     # ------------------------------------------------------------------
-    # TODO: 5. Implement and test this function.
+    # DONE: 5. Implement and test this function.
     #   Note that you should write its TEST function first (above).
     #
     # CHALLENGE: Try to solve this problem with no additional sequences
@@ -354,8 +430,17 @@ def first_is_elsewhere_too(seq_seq):
       :type seq_seq: (list, tuple)
     and the given argument is a sequence of sequences.
     """
+    if seq_seq[0] == []:
+        return False
+    seq = seq_seq[0]
+    for k in range(1, len(seq_seq)):
+        for i in range(len(seq_seq[k])):
+            for j in range(len(seq)):
+                if seq[j] == seq_seq[k][i]:
+                    return True
+    return False
     # ------------------------------------------------------------------
-    # TODO: 6. Implement and test this function.
+    # DONE: 6. Implement and test this function.
     #          Some tests are already written for you (above).
     #
     # IMPLEMENTATION RESTRICTION:
