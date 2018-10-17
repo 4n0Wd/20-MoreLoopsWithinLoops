@@ -3,8 +3,8 @@ This project demonstrates NESTED LOOPS (i.e., loops within loops)
 in the context of TWO-DIMENSIONAL GRAPHICS.
 
 Authors: David Mutchler, Valerie Galluzzi, Mark Hays, Amanda Stouder,
-         their colleagues and PUT_YOUR_NAME_HERE.
-"""  # TODO: 1. PUT YOUR NAME IN THE ABOVE LINE.
+         their colleagues and Hanyu Yang.
+"""  # DONE: 1. PUT YOUR NAME IN THE ABOVE LINE.
 
 import rosegraphics as rg
 
@@ -48,8 +48,29 @@ def draw_upside_down_wall(rectangle, n, window):
       :type window: rg.RoseWindow
     and n is nonnegative.
     """
+    rectangle.attach_to(window)
+    corner1 = rg.Point(rectangle.get_upper_left_corner().x - rectangle.get_width() / 2,
+                       rectangle.get_upper_left_corner().y - rectangle.get_height())
+    corner2 = rg.Point(rectangle.get_lower_right_corner().x - rectangle.get_width() / 2,
+                       rectangle.get_lower_right_corner().y - rectangle.get_height())
+    for k in range(n - 1):
+        rectangle = rg.Rectangle(corner1, corner2)
+        rectangle.attach_to(window)
+        for i in range(k + 1):
+            corner1 = rg.Point(rectangle.get_upper_left_corner().x + rectangle.get_width(),
+                               rectangle.get_upper_left_corner().y)
+            corner2 = rg.Point(rectangle.get_lower_right_corner().x + rectangle.get_width(),
+                               rectangle.get_lower_right_corner().y)
+            rectangle = rg.Rectangle(corner1, corner2)
+            rectangle.attach_to(window)
+        corner1 = rg.Point(rectangle.get_upper_left_corner().x - (rectangle.get_width() / 2) * (2 * k + 3),
+                           rectangle.get_upper_left_corner().y - rectangle.get_height())
+        corner2 = rg.Point(rectangle.get_lower_right_corner().x - (rectangle.get_width() / 2) * (2 * k + 3),
+                           rectangle.get_lower_right_corner().y - rectangle.get_height())
+
+    window.render()
     # ------------------------------------------------------------------
-    # TODO: 2. Implement and test this function.
+    # DONE: 2. Implement and test this function.
     #     Some tests are already written for you (above).
     # ------------------------------------------------------------------
 
